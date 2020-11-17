@@ -29,7 +29,7 @@ background: rgb(255, 242, 242);
 }
 .temporaryimg {
 height: 200px;
-background: rgb(160, 160, 160);
+background: rgb(160, 160, 160, 0.3);
 opacity: 0.5;
 }
 .sourcetextform {
@@ -39,13 +39,18 @@ border: solid 1px white;
 }
 
 body {
-    background: rgb(232, 229, 229) url("/static/img/icon-mockingbird.png");
-    background-size: cover;
+    background: white url("/static/img/mockingbird_watercolor.jpeg");
+    background-size: contain;
+    background-position: center bottom;
+    /* background-size: cover; */
+    background-size:100% 80%;
     
     /* color and text-align are Homepage text attributes */  
     
     /* color: white; */
     /* text-align: center; */
+
+    
 }
 </style>
 
@@ -86,7 +91,7 @@ body {
           <h5>Photo of a mockingbird?</h5>
 
           <!-- ! fix image below. Image doesn't work -->
-          <div class="temporaryimg" img src="/static/img/icon-mockingbird.png" alt="Bird Logo" style="width:200px;height:200px;"></div>
+          <div class="temporaryimg" img src="/static/img/mockingbird_water_color.jpeg" alt="Bird Logo" style="width:200px;height:200px;"></div>
           <p> Can put some text here??..</p>
 
           <!-- ! need a block to balance the page -->
@@ -100,7 +105,8 @@ body {
           <hr class="hidden-sm hidden-md hidden-lg">
         </div>
 
-        <div class="col-sm-8" style="border: double 8px blue;" >
+        <!-- Note: in code below, background-color: rgb(233, 194, 200, 0.6) - 0.6 here refers to the background color opacity -->
+        <div class="col-sm-8" style="border: double 8px black; background-color: rgb(233, 194, 200, 0.4)" > 
 
           
           <div class="sourcetextform">
@@ -130,7 +136,7 @@ body {
             <form action="/" method="post">
               
               <label for="twitterhandle1">I'd like to ask</label>
-              <input list="text_source1" id="firsttextsource" name="firsttextsource" placeholder="@BarackObama" >
+              <input list="text_source1" id="firsttextsource" name="firsttextsource" placeholder="@BarackObama" required>
               <datalist id="text_source1">
                 <option value="God">
                 <option value="Monty Python">
@@ -141,10 +147,9 @@ body {
                 </option>
               </datalist><br>
 
-              <label for="twitterhandle2">I'd also like to ask</label>
-              <input type="text" id="text_source2" name="twitterhandle2" placeholder="@realDonaldTrump"><br>
-              <!-- <label for="lname">Second twitter handle</label>
-              <input type="text" id="secondtwitterhandle" name="handle2"><br> -->
+              <!-- <label for="twitterhandle2">I'd also like to ask</label> -->
+              <!-- <input type="text" id="text_source2" name="twitterhandle2" placeholder="@realDonaldTrump"><br> -->
+              
               <input type="submit" value="Submit">
             </form>
           </div>
@@ -156,8 +161,9 @@ body {
           <p>Markov Chain Result:</p>
           <!-- this is where I take markov chain generated text and display on to the webpage. -->
           <!-- using STRONG tag to lay emphasis on the text and make it bold. -->
+
           <form action="/" method="post">
-          <div type= text class="textshadowbox"><strong>{{markov_generated_text}}</strong></div>
+          <div type= text class="textshadowbox" style="text-align: center; padding: 70px 0;"><strong>{{markov_generated_text}}</strong></div>
           </form>
           <p>Some text..</p>
           <p>.... ............. .......... ........... ......... ......... . . ......... . .. . . .............................</p>

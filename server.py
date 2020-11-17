@@ -19,7 +19,7 @@ app = Flask(__name__)
 app.secret_key = "devashni"
 app.jinja_env.undefined = StrictUndefined
 
-source_dict = {"God": None, "Monty Python": monty_python, "Oscar Wilde": None, "Sigmund Freud": None, "George Carlin":None, "Trump Tweets": trump_tweets }
+source_dict = {"God": None, "Monty Python": monty_python, "Trump Tweets": trump_tweets, "Oscar Wilde": None, "Sigmund Freud": None, "George Carlin":None }
 
 @app.route("/")
 def homepage():
@@ -50,7 +50,7 @@ def show_markovtext():
 
     chains = markov.make_chains(markov.make_sentence(text))
     markov_generated_text = markov.make_text(chains, markov.min_words)
-    # print (markov_generated_text)
+    print (markov_generated_text)
 
     return render_template('homepage.html', chains = chains, markov_generated_text = markov_generated_text, text_source1 = text_source1 )
 
@@ -60,7 +60,7 @@ def login_signup():
     """View login  / sign up page."""
 
     return render_template("login.html")
-    
+
 
 @app.route('/login', methods=['POST'])
 def register_user():
