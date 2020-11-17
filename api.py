@@ -3,7 +3,7 @@ import os
 import json
 
 def auth():
-    return 'secret key' #move to secrets.sh
+    return 'secret key' #move to secrets.s
 
 
 def create_headers(bearer_token):

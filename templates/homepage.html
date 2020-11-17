@@ -25,7 +25,7 @@
 .textshadowbox {
 height: 200px;
 background: rgb(255, 242, 242);
-opacity: 0.5;
+/* opacity: 0.5; */
 }
 .temporaryimg {
 height: 200px;
@@ -35,7 +35,7 @@ opacity: 0.5;
 .sourcetextform {
 height: 300px;
 /* background: yellow; */
-border: solid 3px green;
+border: solid 1px white;
 }
 
 body {
@@ -53,97 +53,129 @@ body {
 
 
 <body>
-    <div class="jumbotron text-center" style="margin-bottom:0">
-        <h1>Mocking Bird</h1>
-        <p>Markov-Chain based text generation, because algorithms are magical. </p> 
-      </div>
+  <div class="jumbotron text-center" style="margin-bottom:0">
+      <h1>Mocking Bird</h1>
+      <p>Markov-Chain based text generation, because algorithms are magical. </p> 
+    </div>
       
-      <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>                        
-            </button>
-            <a class="navbar-brand" href="#">Mocking Bird</a>
-          </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#">About Me</a></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="#">Login</a></li>
-            </ul>
-          </div>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+          <a class="navbar-brand" href="#">Mocking Bird</a>
         </div>
-      </nav>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">About Me</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="/login">Login</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
       
-      <div class="container" style="border: solid 4px pink;">
-        <div class="row" style="border: dotted 4px red ;">
-          <div class="col-sm-4" style="border: dashed 4px black ;">
-            <h2>About Markov Chain</h2>
-            <h5>Photo of a mockingbird?</h5>
+    <div class="container" style="border: solid 4px pink;">
+      <div class="row" style="border: dotted 4px red ;">
+        <div class="col-sm-4" style="border: dashed 4px black ;">
+          <h2>About Markov Chain</h2>
+          <h5>Photo of a mockingbird?</h5>
 
-            <!-- ! fix image below. Image doesn't work -->
-            <div class="temporaryimg" img src="/static/img/icon-mockingbird.png" alt="Bird Logo" style="width:200px;height:200px;"></div>
-            <p> Can put some text here??..</p>
+          <!-- ! fix image below. Image doesn't work -->
+          <div class="temporaryimg" img src="/static/img/icon-mockingbird.png" alt="Bird Logo" style="width:200px;height:200px;"></div>
+          <p> Can put some text here??..</p>
 
-            <!-- ! need a block to balance the page -->
-            <h3>Some Stuff that's linked!!!!!!</h3>
-            <p>More stuff??</p>
-            <ul class="nav nav-pills nav-stacked">
-              <li class="active"><a href="#">Link 1</a></li>
-              <li><a href="#">Link 2</a></li>
-              <li><a href="#">Link 3</a></li>
-            </ul>
-            <hr class="hidden-sm hidden-md hidden-lg">
-          </div>
+          <!-- ! need a block to balance the page -->
+          <h3>Some Stuff that's linked!!!!!!</h3>
+          <p>More stuff??</p>
+          <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="#">Link 1</a></li>
+            <li><a href="#">Link 2</a></li>
+            <li><a href="#">Link 3</a></li>
+          </ul>
+          <hr class="hidden-sm hidden-md hidden-lg">
+        </div>
 
-          <div class="col-sm-8" style="border: double 8px blue;" >
+        <div class="col-sm-8" style="border: double 8px blue;" >
+
+          
+          <div class="sourcetextform">
+          <!-- once user Clicks the "Submit" button, the form-data will be sent to a page on the server called "action_page.php". -->
+          <h2>Let's have some fun!</h2>
+          <!-- START: font test-->
+          <!-- <h3 style="font-family: 'Open Sans', sans-serif;font-family: 'Sacramento', cursive;"> This is a FONT test Para</h3> -->
+          <!-- <h3> This is a FONT test Para</h3> -->
+          <!-- END: font test -->
+
+          <!-- ! Form QUESTION BLOCK: 1 (take user input for question they want to ask a celebrity using markov chain) -->
+          <h5> Have you ever wanted to have a conversation with a famous personality? Now you can! <br> 
+            Enter the twitter handle of your favorite celebrity or simply select one from the drop down menu and ask them anything. <br> 
+            If you think two celebs are better than one, we got you covered. You get to pick upto two personalities! </h3>
+
+            <label for="questions"><strong>Choose a question:</strong></label>
+            <select name="question" id="celeb_ques">
+              <option value="feelings">If you weren't afraid to hurt my feelings what would you tell me?</option>
+              <option value="life">What is the meaning of life?</option>
+              <option value="advice">What's the best piece of advice you've ever received?</option>
+              <option value="weird">What’s the weirdest thing you’ve heard?</option>
+              <option value="mistake">How would you cryptically describe the biggest mistake of your life?</option>
+              <option value="mistake">How do you feel about politics?</option> <br>
+            </select>
 
             <!-- ! FORM ACTION BLOCK: 1 (take user input twitter handle/s and/or text tpo generate markov chain) -->
-            <div class="sourcetextform">
-            <!-- once user Clicks the "Submit" button, the form-data will be sent to a page on the server called "action_page.php". -->
-            <h2>Let's have some fun!</h2>
-            <!-- START: font test-->
-            <h3 style="font-family: 'Open Sans', sans-serif;font-family: 'Sacramento', cursive;"> This is a FONT test Para</h3>
-            <h3> This is a FONT test Para</h3>
-            <!-- END: font test -->
-            <h5>Enter your favorite twitter handle/s and or texts from your favorite book/article/movie transcript. </h3>
-              <form action="/action_page.php">
-                <label for="fname">First twitter handle</label>
-                <input type="text" id="firsttwitterhandle" name="handle1"><br><br>
-                <label for="lname">Second twitter handle</label>
-                <input type="text" id="secondtwitterhandle" name="handle2"><br><br>
-                <input type="submit" value="Submit">
-              </form>
-            </div>
+            <form action="/" method="post">
+              
+              <label for="twitterhandle1">I'd like to ask</label>
+              <input list="text_source1" id="firsttextsource" name="firsttextsource" placeholder="@BarackObama" >
+              <datalist id="text_source1">
+                <option value="God">
+                <option value="Monty Python">
+                <option value="Oscar Wilde">
+                <option value="Sigmund Freud">
+                <option value="George Carlin">
+                <option value="Trump Tweets">
+                </option>
+              </datalist><br>
 
-
-            <h2>Generated Text Result</h2>
-            <!-- !make date dynamic -->
-            <h5>Markov Chain Result, (insert date??)</h5>
-            <!-- this is where I take markov chain generated text and display on to the webpage. -->
-            <!-- using STRONG tag to lay emphasis on the text and make it bold. -->
-            <div type= text class="textshadowbox"><strong>{{random_text}}</strong></div>
-            <p>Some text..</p>
-            <p>.... ............. .......... ........... ......... ......... . . ......... . .. . . .............................</p>
-            <br>
-
-
-            <h2 style="font-weight: bold; color:rgb(6, 6, 6)">Word Cloud </h2>
-            <!-- !make date dynamic -->
-            <h5>Most frequently used words in CURRENTLY SELECTED source text, (insert date??)</insert></h5>
-            <div class="temporaryimg" style="font-weight: bold; color:rgb(5, 5, 5)">....Insert word cloud visualization here....</div>
-            <p>Some text..</p>
-            <p>Lots of text goes here............. use words, like lots and lots of words. </p>
+              <label for="twitterhandle2">I'd also like to ask</label>
+              <input type="text" id="text_source2" name="twitterhandle2" placeholder="@realDonaldTrump"><br>
+              <!-- <label for="lname">Second twitter handle</label>
+              <input type="text" id="secondtwitterhandle" name="handle2"><br> -->
+              <input type="submit" value="Submit">
+            </form>
           </div>
+
+
+          <h2>Generated Text Result</h2>
+          <!-- !make date dynamic -->
+          <h5>What a thoughtful question. Celebrity 1 and Celebrity 2 put their heads together and now they have an answer for you.</h5>
+          <p>Markov Chain Result:</p>
+          <!-- this is where I take markov chain generated text and display on to the webpage. -->
+          <!-- using STRONG tag to lay emphasis on the text and make it bold. -->
+          <form action="/" method="post">
+          <div type= text class="textshadowbox"><strong>{{markov_generated_text}}</strong></div>
+          </form>
+          <p>Some text..</p>
+          <p>.... ............. .......... ........... ......... ......... . . ......... . .. . . .............................</p>
+          <br>
+
+
+          <h2 style="font-weight: bold; color:rgb(6, 6, 6)">Word Cloud </h2>
+          <!-- !make date dynamic -->
+          <h5>Most frequently used words in CURRENTLY SELECTED source text</insert></h5>
+          <div class="temporaryimg" style="font-weight: bold; color:rgb(5, 5, 5)">....Insert word cloud visualization here....</div>
+          <p>Some text..</p>
+          <p>Lots of text goes here............. use words, like lots and lots of words. </p>
         </div>
       </div>
-      
-      <div class="jumbotron text-center" style="margin-bottom:0">
-        <p>This is the Footer</p>
-      </div>
-      </body>
-      </html>
+    </div>
+    
+    <div class="jumbotron text-center" style="margin-bottom:0">
+      <p>This is the Footer</p>
+    </div>
+    </body>
+    </html>
