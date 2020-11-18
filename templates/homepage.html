@@ -13,14 +13,14 @@
     integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
 
-    <!-- ...Get more fonts here: https://fonts.google.com/   ... using  a script from google fonts below for testing -->
+    <!-- TODO: Get more fonts here: https://fonts.google.com/ ; below is a sample script from google fonts for testing -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Sacramento&display=swap" rel="stylesheet">
 
    
 
 
-<!-- ! eventually put these css classes in a stylesheet?? may be?? -->
+<!-- TODO: eventually put these css classes in a stylesheet, perhaps? -->
 <style>
 .textshadowbox {
 height: 200px;
@@ -46,21 +46,17 @@ body {
     background-size:100% 80%;
     
     /* color and text-align are Homepage text attributes */  
-    
     /* color: white; */
     /* text-align: center; */
-
-    
 }
 </style>
-
 </head>
 
 
 <body>
   <div class="jumbotron text-center" style="margin-bottom:0">
-      <h1>Mocking Bird</h1>
-      <p>Markov-Chain based text generation, because algorithms are magical. </p> 
+      <h1>Mockingbird</h1>
+      <p>Markov-Chain based text generation, because algorithms are magical.</p> 
     </div>
       
     <nav class="navbar navbar-inverse">
@@ -71,12 +67,12 @@ body {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>                        
           </button>
-          <a class="navbar-brand" href="#">Mocking Bird</a>
+          <a class="navbar-brand" href="#">Mockingbird</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">About Me</a></li>
+            <li><a href="#">About Mockingbird</a></li>
             <li><a href="#">Contact</a></li>
             <li><a href="/login">Login</a></li>
           </ul>
@@ -90,7 +86,7 @@ body {
           <h2>About Markov Chain</h2>
           <h5>Photo of a mockingbird?</h5>
 
-          <!-- ! fix image below. Image doesn't work -->
+          <!-- TODO: fix image below. Image doesn't work -->
           <div class="temporaryimg" img src="/static/img/mockingbird_water_color.jpeg" alt="Bird Logo" style="width:200px;height:200px;"></div>
           <p> Can put some text here??..</p>
 
@@ -110,17 +106,16 @@ body {
 
           
           <div class="sourcetextform">
-          <!-- once user Clicks the "Submit" button, the form-data will be sent to a page on the server called "action_page.php". -->
-          <h2>Let's have some fun!</h2>
           <!-- START: font test-->
           <!-- <h3 style="font-family: 'Open Sans', sans-serif;font-family: 'Sacramento', cursive;"> This is a FONT test Para</h3> -->
           <!-- <h3> This is a FONT test Para</h3> -->
           <!-- END: font test -->
 
-          <!-- ! Form QUESTION BLOCK: 1 (take user input for question they want to ask a celebrity using markov chain) -->
+          <h2 style="font-weight: bold; color:rgb(6, 6, 6)">Let's have some fun!</h2>
+
+          <!-- ! START SELECT QUESTION BLOCK:(take user input for question they want to ask a celebrity using markov chain) -->
           <h5> Have you ever wanted to have a conversation with a famous personality? Now you can! <br> 
-            Enter the twitter handle of your favorite celebrity or simply select one from the drop down menu and ask them anything. <br> 
-            If you think two celebs are better than one, we got you covered. You get to pick upto two personalities! </h3>
+            Enter the twitter handle of your favorite celebrity or simply select one from the drop down menu and ask them anything.</h3>
 
             <label for="questions"><strong>Choose a question:</strong></label>
             <select name="question" id="celeb_ques">
@@ -132,8 +127,8 @@ body {
               <option value="mistake">How do you feel about politics?</option> <br>
             </select>
 
-            <!-- ! FORM ACTION BLOCK: 1 (take user input twitter handle/s and/or text tpo generate markov chain) -->
-            <form action="/" method="post">
+            <!-- ! START FORM ACTION BLOCK: (take user input twitter handle/s and/or text tpo generate markov chain) -->
+            <form action="/" method="POST">
               
               <label for="twitterhandle1">I'd like to ask</label>
               <input list="text_source1" id="firsttextsource" name="firsttextsource" placeholder="@BarackObama" required>
@@ -147,35 +142,37 @@ body {
                 </option>
               </datalist><br>
 
+              <!-- !TODO - DECIDE: Do we need a second text source to mix-up the markov chain? -->
               <!-- <label for="twitterhandle2">I'd also like to ask</label> -->
               <!-- <input type="text" id="text_source2" name="twitterhandle2" placeholder="@realDonaldTrump"><br> -->
               
               <input type="submit" value="Submit">
             </form>
-          </div>
+            <!-- ! END OF FORM ACTION BLOCK: -->
+           </div>
+           
 
-
-          <h2>Generated Text Result</h2>
-          <!-- !make date dynamic -->
-          <h5>What a thoughtful question. Celebrity 1 and Celebrity 2 put their heads together and now they have an answer for you.</h5>
-          <p>Markov Chain Result:</p>
+          <!-- This block ONLY appears once user has submitted a 'text source' aka picked a celeb to answer their question -->
+          {% if request.method == "POST" %}
+          <!-- TODO: Make 'what a thoughtful question' a random choice text from a list of texts like- great question, interesting question etc. -->
+          <h3 style="font-weight: bold; color:rgb(6, 6, 6)">What a thoughtful question! {{text_source1}} has an answer for you. </h3>
+          <p>Markov-chain generated text: </p>
           <!-- this is where I take markov chain generated text and display on to the webpage. -->
           <!-- using STRONG tag to lay emphasis on the text and make it bold. -->
-
-          <form action="/" method="post">
           <div type= text class="textshadowbox" style="text-align: center; padding: 70px 0;"><strong>{{markov_generated_text}}</strong></div>
-          </form>
+          {% endif %}
+          
           <p>Some text..</p>
-          <p>.... ............. .......... ........... ......... ......... . . ......... . .. . . .............................</p>
+          <p>.... ....................... ........... ......... ......... . .</p>
           <br>
 
 
           <h2 style="font-weight: bold; color:rgb(6, 6, 6)">Word Cloud </h2>
-          <!-- !make date dynamic -->
+          
           <h5>Most frequently used words in CURRENTLY SELECTED source text</insert></h5>
           <div class="temporaryimg" style="font-weight: bold; color:rgb(5, 5, 5)">....Insert word cloud visualization here....</div>
           <p>Some text..</p>
-          <p>Lots of text goes here............. use words, like lots and lots of words. </p>
+          <p>Lots of text goes here.......use words, like lots and lots of words. </p>
         </div>
       </div>
     </div>
@@ -184,4 +181,11 @@ body {
       <p>This is the Footer</p>
     </div>
     </body>
+
+    <!-- !added the script below to 'prevent POST on reloading a form once the user has submitted an input (i.e. text source)' and automatically rendering the markov chain -->
+    <script>
+      if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+      </script>
     </html>

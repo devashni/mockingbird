@@ -29,31 +29,18 @@ def homepage():
 
 
 
-@app.route("/", methods=['GET','POST'])
+@app.route("/", methods=['POST'])
 def show_markovtext():
     """Get source text from user and return a markov chain to answer the selected question"""
-
-    # ! checking method
-    if request.method == 'POST':
-        print("DEVZ: We are in POST!")
-    else:
-        print("DEVZ: We are in GET!")
-
-    # ! print test BEFORE getting form value
-    print("DEVZ: About to request the value of firsttextsource")
+    
+    # user_question = request.form.get('celeb_ques') --->Fix this: get select value from the frontend
     text_source1 = request.form.get('firsttextsource')
-    # ! print test AFTER getting form value
-    print("DEVZ: Result of request: " + str(text_source1))
-
-    # text_source2 = request.form.get('twitterhandle2')
     text = source_dict[text_source1]
-
     chains = markov.make_chains(markov.make_sentence(text))
     markov_generated_text = markov.make_text(chains, markov.min_words)
-    print (markov_generated_text)
-
-    return render_template('homepage.html', chains = chains, markov_generated_text = markov_generated_text, text_source1 = text_source1 )
-
+    # print (markov_generated_text)
+        
+    return render_template('homepage.html', markov_generated_text= markov_generated_text, text_source1=text_source1)
 
 @app.route("/login")
 def login_signup():
