@@ -4,6 +4,8 @@ import time
 
 from random import choice, shuffle
 
+from testtext import trump_tweets
+
 def make_sentence(words):
     """Take a list of strings as input and join them together (with spaces in between) to form a sentence."""
     return ' '.join(words)
@@ -88,14 +90,17 @@ def make_text(chains, min_words):
             # # At this point, we have printed the sentence, and also all the
             # # words in the chain.  Sleep for a second so the user can see the
             # # full sentence, along with the words in the chain.
+            # ! uncomment to implement terminal visualization
             # time.sleep(1.0)
-            clear_screen()
+            # clear_screen()
+
             # # Now just print the sentence as it would be after the word chosing
             # # process is over.
 
             print(make_sentence(words) + ' ' + chosen_word)
             # # Sleep for another half a second so the user gets to see the full
             # # sentence with the word now added in.
+            # ! uncomment to implement terminal visualization
             # time.sleep(0.5)
         else:
             # Else, if we only had one word, just join that to the list of
@@ -103,6 +108,7 @@ def make_text(chains, min_words):
             print(make_sentence(words))
             # Sleep for 0.1s.  This will allow the user to see the sentence
             # with the new word momentarily before we replace the sentence with a new one.
+            # ! uncomment to implement terminal visualization
             # time.sleep(0.1)
 
         # If we already have the number of words we need, and have a
@@ -112,7 +118,8 @@ def make_text(chains, min_words):
             words.append(terminating_word)
             # clear the screen before we exit, since we are done with
             # visualization and are now just returning the actual string.
-            clear_screen()
+            # ! uncomment to implement terminal visualization
+            # clear_screen()
             return make_sentence(words)
         else:
             word = chosen_word
@@ -121,14 +128,16 @@ def make_text(chains, min_words):
         # clear the screen, we're done visualizing.  The next iteration will
         # visualize the next word being added, so let's make sure that the
         # screen is clear before then.
-        clear_screen()
+        # ! uncomment to implement terminal visualization
+        # clear_screen()
     return make_sentence(words)
 
-min_words = 10
-# shuffle(trump_tweets)
+# TODO: Potential Feature -Can also take min_words input from users to make the interface more dynamic in the future
+min_words = 15
 
 # ! ONLY for Algorithm testing below; functions are being called in a separate file
-# chains = make_chains(make_sentence(trump_tweets))
-# text = make_text(chains, min_words)
-
-# print(text)
+if __name__ == "__main__": 
+    shuffle(trump_tweets)
+    chains = make_chains(make_sentence(trump_tweets))
+    text = make_text(chains, min_words)
+    print(text)

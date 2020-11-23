@@ -17,8 +17,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Sacramento&display=swap" rel="stylesheet">
 
-   
-
+    <!-- calling the Javascript Markov Chain generator file here -->
+    <script src="{{url_for('static', filename='test.js')}}"></script>
 
 <!-- TODO: eventually put these css classes in a stylesheet, perhaps? -->
 <style>
@@ -112,7 +112,7 @@ body {
           <!-- END: font test -->
 
           <h2 style="font-weight: bold; color:rgb(6, 6, 6)">Let's have some fun!</h2>
-
+          
           <!-- ! START SELECT QUESTION BLOCK:(take user input for question they want to ask a celebrity using markov chain) -->
           <h5> Have you ever wanted to have a conversation with a famous personality? Now you can! <br> 
             Enter the twitter handle of your favorite celebrity or simply select one from the drop down menu and ask them anything.</h3>
@@ -128,19 +128,19 @@ body {
             </select>
 
             <!-- ! START FORM ACTION BLOCK: (take user input twitter handle/s and/or text tpo generate markov chain) -->
+            
             <form action="/" method="POST">
-              
               <label for="twitterhandle1">I'd like to ask</label>
               <input list="text_source1" id="firsttextsource" name="firsttextsource" placeholder="@BarackObama" required>
               <datalist id="text_source1">
                 <option value="God">
                 <option value="Monty Python">
+                <option value="Trump Tweets">
                 <option value="Oscar Wilde">
                 <option value="Sigmund Freud">
                 <option value="George Carlin">
-                <option value="Trump Tweets">
                 </option>
-              </datalist><br>
+             </datalist>
 
               <!-- !TODO - DECIDE: Do we need a second text source to mix-up the markov chain? -->
               <!-- <label for="twitterhandle2">I'd also like to ask</label> -->
@@ -159,7 +159,10 @@ body {
           <p>Markov-chain generated text: </p>
           <!-- this is where I take markov chain generated text and display on to the webpage. -->
           <!-- using STRONG tag to lay emphasis on the text and make it bold. -->
-          <div type= text class="textshadowbox" style="text-align: center; padding: 70px 0;"><strong>{{markov_generated_text}}</strong></div>
+          <div id='markov-output-div' type= text class="textshadowbox" style="text-align: right; padding: 70px 0;"></div>
+          <script>
+            processTweets(`{{markov_generated_text|safe}}`);
+          </script>
           {% endif %}
           
           <p>Some text..</p>
@@ -183,9 +186,10 @@ body {
     </body>
 
     <!-- !added the script below to 'prevent POST on reloading a form once the user has submitted an input (i.e. text source)' and automatically rendering the markov chain -->
+    <!-- ! aka Stop Form Resubmission On Page Refresh by using the javascript code below -->
     <script>
       if ( window.history.replaceState ) {
         window.history.replaceState( null, null, window.location.href );
       }
-      </script>
+    </script>
     </html>

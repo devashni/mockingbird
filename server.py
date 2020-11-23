@@ -11,7 +11,7 @@ from model import connect_to_db
 
 import markov
 import crud
-from testtext import trump_tweets, monty_python
+from testtext import trump_tweets, monty_python, oscar_wilde
 
 
 app = Flask(__name__)
@@ -19,13 +19,14 @@ app = Flask(__name__)
 app.secret_key = "devashni"
 app.jinja_env.undefined = StrictUndefined
 
-source_dict = {"God": None, "Monty Python": monty_python, "Trump Tweets": trump_tweets, "Oscar Wilde": None, "Sigmund Freud": None, "George Carlin":None }
+source_dict = {"God": None, "Monty Python": monty_python, "Trump Tweets": trump_tweets, "Oscar Wilde": oscar_wilde, "Sigmund Freud": None, "George Carlin":None }
 
 @app.route("/")
 def homepage():
     """View homepage."""
 
     return render_template("homepage.html")
+    #return render_template("test.html")
 
 
 
@@ -33,13 +34,13 @@ def homepage():
 def show_markovtext():
     """Get source text from user and return a markov chain to answer the selected question"""
     
-    # user_question = request.form.get('celeb_ques') --->Fix this: get select value from the frontend
+    # user_question = request.form.get('celeb_ques')
     text_source1 = request.form.get('firsttextsource')
     text = source_dict[text_source1]
-    chains = markov.make_chains(markov.make_sentence(text))
-    markov_generated_text = markov.make_text(chains, markov.min_words)
+    # chains = markov.make_chains(markov.make_sentence(text))
+    # markov_generated_text = markov.make_text(chains, markov.min_words)
     # print (markov_generated_text)
-        
+    markov_generated_text = text
     return render_template('homepage.html', markov_generated_text= markov_generated_text, text_source1=text_source1)
 
 @app.route("/login")

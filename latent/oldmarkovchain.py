@@ -43,7 +43,7 @@ def make_text(chains):
     keys = list(chains.keys())
     key = choice(keys)
 
-    words = [key[0], key[1]]
+    generated_words = [key[0], key[1]]
     while key in chains:
         # Keep looping until we have a key that isn't in the chains
         # (which would mean it was the end of our original text).
@@ -52,7 +52,7 @@ def make_text(chains):
         # it would run for a very long time.
 
         word = choice(chains[key])
-        words.append(word)
+        generated_words.append(word)
         key = (key[1], word)
 
     return ' '.join(words)
