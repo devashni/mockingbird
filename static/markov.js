@@ -1,33 +1,42 @@
+
 // A Javascript Markov chain generator.
 
 function makeChains(textString) {
-    // Take input text as string; return dictionary?? of Markov chains.
+    // Take input text as string; return dictionary of Markov chains.
+
+    //e.g chains = {["A","witch!"]:["A", "A", "We’ve", "Burn",“You"], .....}
     let chains = {};
 
     let words = textString.split(' ');
     for (let i = 0; i < words.length -2; i++) {
         let chainsKey = [words[i], words[i + 1]];
-        let value = words[i + 2];
+        let chainsValue = words[i + 2];
         if (!(chainsKey in chains)) {
             chains[chainsKey] = [];
         }
-        chains[chainsKey].push(value);
-        // console.log(chains);
+        chains[chainsKey].push(chainsValue);
     }
+    console.log(chains);
     return chains;
 }
 
 function makeMarkovText(chains, minLength) {
-    let output_objects = [];
+    let outputString = [];
     
-    // keys is a 'word pair' e.g. (word1, word2), acting as key in chains dict
+    // keys is an array of 'word-pair' strings acting as key in chains dict
+    // e.g. keys = ["Whoa,there!",
+    //              "there!,Halt!",
+    //              "Halt!,Who",
+    //              "Who,goes",
+    //              "goes,there?"]
     let keys = Object.keys(chains); 
 
     // select a random word from a list of keys from chains dict
-    let random_location = Math.floor(Math.random() * keys.length);
-    let key = keys[random_location].split(',');
+    let random_location = Math.floor(Math.random() * keys.length); //random_location is the 'index' of key in keys list.
+    let key = keys[random_location].split(','); // e.g. key = ["bridge.", "Then"]
 
-    let generated_words = [key[0], key[1]];
+    // here generated_words is same as the key, but more words are added to the arrays in the while loop below
+    let generated_words = [key[0], key[1]]; 
 
     while (key in chains) {
         // Keep looping until we have a key that isn't in the chains
@@ -40,22 +49,23 @@ function makeMarkovText(chains, minLength) {
         // Check if we only had one word as an option
         if (chains[key].length == 1) {
             // Then just add the new generated words as a single element list, to the output.
-            output_objects.push([generated_words.join(' ') + '<br>']);
-        } else {
+            outputString.push([generated_words.join(' ') + '<br>']);
+        } 
+        else {
             // First add the full sentence.
-            output_list = [generated_words.join(' ') + '<br>']
+            outputList = [generated_words.join(' ') + '<br>']
             // Now add all the words.
             for (let i = 0; i < chains[key].length; i++) {
-                output_list.push(chains[key][i] + '<br>');
+                outputList.push(chains[key][i] + '<br>');
             }
-            // Add our output list of strings to the output_objects.
-            output_objects.push(output_list);
+            // Add our outputList of strings to the outputString.
+            outputString.push(outputList);
         }
         key = [key[1], word];
         // We don't use 'word' after this, so it is safe to change it with pop()
         if ((generated_words.length > minLength) && (word.slice(-1) == '.')) {
-            return output_objects;
-//            return generated_words.join(' ');
+            return outputString;
+            // return generated_words.join(' ');
         }
     }
     return output_objects;

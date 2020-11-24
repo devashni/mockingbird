@@ -1,13 +1,18 @@
+
+# ! markov-chain visualization prototype in the terminal
+
 import sys
 import os
 import time
 
 from random import choice, shuffle
 
-from testtext import trump_tweets
+from testtext import trump_tweets, monty_python, oscar_wilde
 
 def make_sentence(words):
     """Take a list of strings as input and join them together (with spaces in between) to form a sentence."""
+    #in: word_lst = ['he', 'said', 'hello']
+    # out: 'he said hello'
     return ' '.join(words)
 
 def make_chains(text_string):
@@ -27,9 +32,12 @@ def make_chains(text_string):
 
     return chains
 
-# * Temporary markov chain visualization in the terminal.
+# * Temporary/prototype markov chain visualization in the terminal.
 def clear_screen():
     """Check the operating system, then clear the screen using the appropriate clear screen command"""
+    # os.name check is to check for 'Window NT (New Type) OS' 
+    # since clear screen command for Mac OS + Linux is 'clear' but for windows it's 'cls', 
+    # this ensures that the correct command is used on the correct OS runing this program
     if os.name == 'nt':
         os.system('cls')
     else:
@@ -40,7 +48,8 @@ def make_text(chains, min_words):
 
     keys = list(chains.keys())
     key = choice(keys)
-
+ 
+    # The first two words of the markov chain
     words = [key[0], key[1]]
     while key in chains:
         # Keep looping until we have a key that isn't in the chains
@@ -50,10 +59,10 @@ def make_text(chains, min_words):
         # it would run for a very long time.
         terminating_word = None
         for c in chains[key]:
-            if (c[-1] == '.'):
+            if (c[-1] == '.'): # can also use '!' or '?' as termination
                 terminating_word = c
         
-        # Choose a word from the words in the chain associated with our key.
+        # Choose a word from the list of words in the chain associated with our key.
         chosen_word = choice(chains[key])
         # Only if we have more than one word in the chain, do a visualization.
         if len(chains[key]) > 1:
@@ -91,8 +100,8 @@ def make_text(chains, min_words):
             # # words in the chain.  Sleep for a second so the user can see the
             # # full sentence, along with the words in the chain.
             # ! uncomment to implement terminal visualization
-            # time.sleep(1.0)
-            # clear_screen()
+            time.sleep(2.0)
+            clear_screen()
 
             # # Now just print the sentence as it would be after the word chosing
             # # process is over.
@@ -101,7 +110,7 @@ def make_text(chains, min_words):
             # # Sleep for another half a second so the user gets to see the full
             # # sentence with the word now added in.
             # ! uncomment to implement terminal visualization
-            # time.sleep(0.5)
+            time.sleep(1.5)
         else:
             # Else, if we only had one word, just join that to the list of
             # words
@@ -109,7 +118,7 @@ def make_text(chains, min_words):
             # Sleep for 0.1s.  This will allow the user to see the sentence
             # with the new word momentarily before we replace the sentence with a new one.
             # ! uncomment to implement terminal visualization
-            # time.sleep(0.1)
+            time.sleep(1.1)
 
         # If we already have the number of words we need, and have a
         # terminating word available?
@@ -119,7 +128,7 @@ def make_text(chains, min_words):
             # clear the screen before we exit, since we are done with
             # visualization and are now just returning the actual string.
             # ! uncomment to implement terminal visualization
-            # clear_screen()
+            clear_screen()
             return make_sentence(words)
         else:
             word = chosen_word
@@ -129,7 +138,7 @@ def make_text(chains, min_words):
         # visualize the next word being added, so let's make sure that the
         # screen is clear before then.
         # ! uncomment to implement terminal visualization
-        # clear_screen()
+        clear_screen()
     return make_sentence(words)
 
 # TODO: Potential Feature -Can also take min_words input from users to make the interface more dynamic in the future
@@ -138,6 +147,6 @@ min_words = 15
 # ! ONLY for Algorithm testing below; functions are being called in a separate file
 if __name__ == "__main__": 
     shuffle(trump_tweets)
-    chains = make_chains(make_sentence(trump_tweets))
+    chains = make_chains(make_sentence(trump_tweets + monty_python))
     text = make_text(chains, min_words)
     print(text)
