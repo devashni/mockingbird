@@ -13,6 +13,7 @@ import markov
 import crud
 from testtext import trump_tweets, monty_python, oscar_wilde
 
+import api
 
 app = Flask(__name__)
 
@@ -26,20 +27,19 @@ def homepage():
     """View homepage."""
 
     #return render_template("homepage.html")
-    return render_template("base.html")
+    return render_template("homepage.html")
 
 @app.route("/", methods=['POST'])
 def show_markovtext():
     """Get source text from user and return a markov chain to answer the selected question"""
     
-    # user_question = request.form.get('celeb_ques')
-    text_source1 = request.form.get('firsttextsource')
-    text = source_dict[text_source1]
-    # chains = markov.make_chains(markov.make_sentence(text))
-    # markov_generated_text = markov.make_text(chains, markov.min_words)
-    # print (markov_generated_text)
-    markov_generated_text = text
-    return render_template('homepage.html', markov_generated_text= markov_generated_text, text_source1=text_source1)
+    source_name = request.form.get('firsttextsource')
+    if (source_name[:1] == '@'):
+        markov_input_text = api.get_tweets_for_user(source_name[1:])
+    else:
+        markov_input_text = source_dict[source_name]
+
+    return render_template('homepage.html', markov_input_text= markov_input_text, text_source1=source_name)
 
 @app.route("/login")
 def login_signup():

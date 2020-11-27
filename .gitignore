@@ -1,4 +1,5 @@
 secrets.sh
+twitter_key
 *.pyc
 env
 .DS_Store

@@ -17,6 +17,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Sacramento&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+
     <!-- calling the Javascript Markov Chain generator file here -->
     <script src="{{url_for('static', filename='markov.js')}}"></script>
 
@@ -159,9 +161,11 @@ body {
           <p>Markov-chain generated text: </p>
           <!-- this is where I take markov chain generated text and display on to the webpage. -->
           <!-- using STRONG tag to lay emphasis on the text and make it bold. -->
-          <div id='markov-output-div' type= text class="textshadowbox" style="text-align: right; padding: 40px 40px;"></div>
+          <!-- <div id='markov-output-div' type= text class="textshadowbox" style="text-align: right; padding: 40px 40px;"></div> -->
+          <!-- <div id="markov-div" style="display: flex;"></div> -->
+          <div id="markov-div" class="textshadowbox" style="display: flex; text-align: right; padding: 40px 40px;"></div>
           <script>
-            processTweets(`{{markov_generated_text|safe}}`);
+            processTweets(`{{markov_input_text|safe}}`);
           </script>
           {% endif %}
           
