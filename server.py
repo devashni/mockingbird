@@ -25,10 +25,8 @@ source_dict = {"God": None, "Monty Python": monty_python, "Trump Tweets": trump_
 def homepage():
     """View homepage."""
 
-    return render_template("homepage.html")
-    #return render_template("test.html")
-
-
+    #return render_template("homepage.html")
+    return render_template("base.html")
 
 @app.route("/", methods=['POST'])
 def show_markovtext():

@@ -4,59 +4,62 @@
 function makeChains(textString) {
     // Take input text as string; return dictionary of Markov chains.
 
-    //e.g chains = {["A","witch!"]:["A", "A", "We’ve", "Burn",“You"], .....}
-    let chains = {};
+    //e.g chainsDict = {["A","witch!"]:["A", "A", "We’ve", "Burn",“You"], .....}
+    let chainsDict = {};
 
     let words = textString.split(' ');
     for (let i = 0; i < words.length -2; i++) {
         let chainsKey = [words[i], words[i + 1]];
         let chainsValue = words[i + 2];
-        if (!(chainsKey in chains)) {
-            chains[chainsKey] = [];
+        if (!(chainsKey in chainsDict)) {
+            chainsDict[chainsKey] = [];
         }
-        chains[chainsKey].push(chainsValue);
+        chainsDict[chainsKey].push(chainsValue);
     }
-    console.log(chains);
-    return chains;
+    // console.log(chainsDict);
+    return chainsDict;
 }
-
-function makeMarkovText(chains, minLength) {
+//////////////////////////////////////////////////////////////////////////////////
+function makeMarkovText(chainsDict, minLength) {
     let outputString = [];
     
-    // keys is an array of 'word-pair' strings acting as key in chains dict
+    // keys is an array of 'word-pair' strings acting as key in chainsDict
     // e.g. keys = ["Whoa,there!",
     //              "there!,Halt!",
     //              "Halt!,Who",
     //              "Who,goes",
     //              "goes,there?"]
-    let keys = Object.keys(chains); 
+    let keys = Object.keys(chainsDict); 
 
-    // select a random word from a list of keys from chains dict
-    let random_location = Math.floor(Math.random() * keys.length); //random_location is the 'index' of key in keys list.
-    let key = keys[random_location].split(','); // e.g. key = ["bridge.", "Then"]
+    // select a random word from a list of keys from chainsDict
+    let randomLocation = Math.floor(Math.random() * keys.length); //random_location is the 'index' of key in keys list.
+    let key = keys[randomLocation].split(','); // e.g. key = ["bridge.", "Then"]
 
-    // here generated_words is same as the key, but more words are added to the arrays in the while loop below
-    let generated_words = [key[0], key[1]]; 
+    // Starting out (below) generatedWords is same as the key, but more words are added to the arrays in the while loop below
+    let generatedWords = [key[0], key[1]]; 
 
-    while (key in chains) {
+    while (key in chainsDict) {
         // Keep looping until we have a key that isn't in the chains
         // (which would mean it was the end of our original text).
 
         // Note: that for long texts this might mean it would run for a very long time
-        let word_random_location = Math.floor(Math.random() * chains[key].length);
-        let word = chains[key][word_random_location];
-        generated_words.push(word);
-        // Check if we only had one word as an option
-        if (chains[key].length == 1) {
-            // Then just add the new generated words as a single element list, to the output.
-            outputString.push([generated_words.join(' ') + '<br>']);
-        } 
-        else {
-            // First add the full sentence.
-            outputList = [generated_words.join(' ') + '<br>']
-            // Now add all the words.
-            for (let i = 0; i < chains[key].length; i++) {
-                outputList.push(chains[key][i] + '<br>');
+        let wordRandomLocation = Math.floor(Math.random() * chainsDict[key].length);
+        let word = chainsDict[key][wordRandomLocation];
+        generatedWords.push(word);
+
+        let outputString = outputString.push([generated_words.join(' ')]
+
+        // // Check if we only had one word as an option
+        // if (chainsDict[key].length == 1) {
+        //     // Then just add the new generated words as a single element list, to the output.
+        //     outputString.push([generatedWords.join(' ') + '<br>']);
+        // } 
+        if (chains[key].length > 1) {
+            // // First add the full sentence.
+            // outputList = [generatedWords.join(' ') + '<br>']
+            // // Now add all the words.
+            for (let i = 0; i < chainsDict[key].length; i++) {
+                outputList.push('<br>' + chainsDict[key][i] + '<br>');
             }
             // Add our outputList of strings to the outputString.
             outputString.push(outputList);
