@@ -131,9 +131,9 @@ function animateStepsOfMarkovChain(parentDivId, steps) {
 }
 
 // ! Main function - this gets loaded, every time I reload the page.
-function processTweets(tweetsText, minLength = 10) {
+function processTweets(tweetsText, outputDivId, minLength = 10) {
     // console.log('In the main function!');
     let steps = returnStepsOfMarkovExecution(tweetsText, minLength);
     console.log(steps);
-    animateStepsOfMarkovChain('#markov-div', steps);
+    animateStepsOfMarkovChain(outputDivId, steps);
 }
