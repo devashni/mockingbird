@@ -33,10 +33,10 @@ class Generated_Text(db.Model):
     __tablename__ = 'generated_texts'
 
     gen_text_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     gen_text = db.Column(db.Text)
 
-    user = db.relationship('User', backref='generated_texts')
+   
     def __repr__(self):
         return f'<Generated_Text gen_text_id={self.gen_text_id} user_id={self.user_id} gen_text={self.gen_text} >'
 

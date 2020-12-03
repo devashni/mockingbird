@@ -96,20 +96,26 @@ function addWordsToOutputDiv(parentDivId, wordArray, chosenWordIndex) {
     for (let i=0; i<wordArray.length; i++){
         if (i === chosenWordIndex){
             divHtml += '<div ' + 'class="multi-word"' + '>' +'<strong>'+ wordArray[i] +'</strong>'+ '</div>';
+        } else {
+            divHtml += '<div ' + 'class="multi-word"' + '>' + wordArray[i] + '</div>';
         }
-        divHtml += '<div ' + 'class="multi-word"' + '>' + wordArray[i] + '</div>';
     }
 
-    let newDiv2 = $('<div id="divID">' + divHtml + '</div>');
+    const maxWords = 5;
+    const wordSizeEm = 2;
+    const minPaddingEm = 2;
+    marginFromTop = ((maxWords - chosenWordIndex) * wordSizeEm) + minPaddingEm;
+    let containerDivStyle = 'margin-top: ' + marginFromTop + 'em;'
+    let containerDiv = $('<div id="multi-word-container" style="' + containerDivStyle + '">' + divHtml + '</div>');
     // let newDiv2 = $('<div id="divID">' + divTextArray + '</div>').css("color", "red");
-    newDiv2.addClass('one-word');
-    $(parentDivId).append(newDiv2);
+    // Each word takes 2em space, so if we have 
+    $(parentDivId).append(containerDiv);
 }
 
 
 // ! This function animates/visualizes the steps of a markov chain algorithm execution run.
 function animateStepsOfMarkovChain(parentDivId, steps) {
-    let interval = 500; // Interval in milliseconds.
+    let interval = 50; // Interval in milliseconds.
     // console.log('Calling setInterval!');
     let i = 0;
     let lenSteps = steps.length
