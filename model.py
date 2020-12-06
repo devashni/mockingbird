@@ -76,8 +76,6 @@ class Sample_Text_Source(db.Model):
 
 
 
-
-
 def connect_to_db(flask_app, db_uri='postgresql:///mockingbird', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo

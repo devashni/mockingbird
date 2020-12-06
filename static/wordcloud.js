@@ -1,34 +1,53 @@
 // This file contains functions to create a word cloud using the D3 API.
 
-function applyScaleFactor(originalFontSize, scaleFactor) {
-  let maxFontSize = 60;
-  scaleFunction = d3.scaleLog().domain([1, 50]).range([10, maxFontSize]);
-  return originalFontSize * scaleFunction(scaleFactor);
+function applyScaleFactor(wordFrequency, frequencyDomainMax, scaleType) {
+  let minFontSize = 20;
+  let maxFontSize = 100;
+  var scaleFunction = null;
+  if (scaleType == 'logarithmic') {
+    scaleFunction = d3.scaleLog().domain([1, frequencyDomainMax]).range([minFontSize, maxFontSize]);
+  } else {
+    scaleFunction = d3.scaleLinear().domain([1, frequencyDomainMax]).range([minFontSize, maxFontSize]);
+  }
+  return scaleFunction(wordFrequency);
 }
 
 function acceptWord(word) {
   // include: I, me, she, he, you, not
   // get rid of integers as well
-  const dntIncludeWords = ['a','to', 'of', 'in', 'it', 'is', 'as', 'at', 'be', 'so', 'on', 'an', 'or', 'do', 'if', 'up', 'by', 'my', 'the', 'and', 'are', 'for', 'but', 'had', 'has', 'was', 'all', 'any', 'one', 'out', 'his', ' her', 'and', 'too', 'from'];
+  const dntIncludeWords = ['a','to', 'of', 'in', 'it', 'is', 'as', 'at',
+                          'be', 'so', 'on', 'an', 'or', 'do', 'if', 'up',
+                          'by', 'my', 'the', 'and', 'are', 'for', 'but',
+                          'had', 'has', 'was', 'all', 'any', 'one', 'out',
+                          'his', ' her', 'and', 'too', 'from', ',', '_', '-', '!', '?', '.', '—', '–'];
+
+  const dontStartWith = ['http', '@', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
   if (dntIncludeWords.includes(word)) {
     return false;
+  } else if (String(parseInt(word)) === word ) {
+    return false;
   }
   
-  // if (word.length <= 2) {
-  //   return false;
-  // }
+  for (dontStart of dontStartWith) {
+    if (word.startsWith(dontStart)) {
+      return false;
+    }
+  }
+
+  if (word.trim().length == 0) {
+    return false;
+  }
 
   return true;
 }
 
-function createWordListWithSize(words) {
+function createWordListWithSize(words, scaleType) {
   // Dictionary of word/wordFrequency (keys/values).
-
   let wordsFrequencyDict = {};
-  let fontScale = 10;
-
-  // Put the words in a dictionary first.
+ 
+  // Put the words in a dictionary first. Save the highest frequency seen
+  let highestFrequency = 0;
   for (let word of words) {
     // dntIncludeWords from the list in the word cloud
     word = word.toLowerCase();
@@ -42,7 +61,11 @@ function createWordListWithSize(words) {
         // being set to 1, since we have only seen the word once till now
         wordsFrequencyDict[word] = 1;
       }
-    }
+      // Update highest seen frequency.
+      if (wordsFrequencyDict[word] > highestFrequency) {
+        highestFrequency = wordsFrequencyDict[word];
+      }
+  }
   }
   // Convert the dictionary to a list of objects, with data and size now.
   returnArray = [];
@@ -51,20 +74,38 @@ function createWordListWithSize(words) {
   for (let word in wordsFrequencyDict) {
     returnArray.push({
       word: word,
-      fontSize: applyScaleFactor(wordsFrequencyDict[word], fontScale),
+      fontSize: applyScaleFactor(wordsFrequencyDict[word], highestFrequency, scaleType),
     });
   }
 
   return returnArray;
 }
 
+function createWordCloudWithName(sourceName, wordsText,
+  outputDivId,
+  scaleType = "logarithmic") {
+
+    let wcDivId = sourceName.slice(1) + String(Math.floor(Math.random() * 100)) +'Id';
+    // Create a div to contain the source name and the word cloud
+    let newDiv = $('<div></div>');
+    newDiv.addClass('single-word-cloud-container');
+    $(outputDivId).append(newDiv);
+
+    let sourceNameLabel = $('<label>' + sourceName + ' (' + scaleType + ')</label>');
+    newDiv.append(sourceNameLabel);
+
+    let wcDiv = $('<div id="' + wcDivId + '"></div>');
+    newDiv.append(wcDiv);
+
+    createCloudFromWords(wordsText, '#' + wcDivId, scaleType);
+}
+
 // ! DONOT touch this function anymore
 function createCloudFromWords(
   wordsText,
   outputDivId,
-  scaleType = "logarithmic"
-) {
-  myWords = createWordListWithSize(wordsText.split(" "));
+  scaleType = "logarithmic") {
+  myWords = createWordListWithSize(wordsText.split(" "), scaleType);
 
   // set the dimensions and margins of the graph
   var margin = { top: 10, right: 10, bottom: 10, left: 10 },

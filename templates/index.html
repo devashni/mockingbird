@@ -33,6 +33,13 @@
 
 
 <script>
+  // Use local storage to save generated markov chain by the
+  // user. Empty it on first page load (or page refresh) for now. 
+  localStorage.clear();
+  // The slide number to add the next markov chain to. Starting out,
+  // we will be adding to slide 1.
+  localStorage.nextChainPosition = 1;
+
   // <!-- !START: script to manage (i.e. activate and hide) Navigation tab elements (Markov Chain, Word CLoud, History) -->
   function activateMarkovTab() {
     $('#markov-tab').show();
@@ -46,24 +53,46 @@
     $('#saved-generated-text-tab').hide();
   }
 
+  function updateFromSavedChains() {
+    let chains = JSON.parse(localStorage.savedChains);
+    let html = '';
+    for (let i = 0; (i < chains.length) && (i < 3); i++) {
+      $('#saved-chain' + String(i + 1)).html(chains[i]);
+    }
+  }
+
   function activateHistoryTab() {
     $('#saved-generated-text-tab').show();
     $('#markov-tab').hide();
     $('#wc-tab').hide();
+
+    if (localStorage.nextChainPosition == 1) {
+      updateFromSavedChains();
+    }
   }
   // <!-- !END: Navigation tab activate and hide -->
+
+  function enableButtonsCallback() {
+    $('#save-markov-chain-button').prop('disabled', false);
+    $('#generate-markov-button').prop('disabled', false);      
+  }
 
   // This function will get called with the text of the tweets retrieved from the backend(server.py). 
   // data will be the json object with the result.
   function tweetsCallbackForMarkovChain(tweetsText, result) {
     if (result == 'success') {
       let selectedMarkovChainLengthValue = $('#min-chain-len-dropdown').val();
-      processTweets(tweetsText, '#markov-chain-output-container', parseInt(selectedMarkovChainLengthValue));
+      let selectedVizInterval = $('#viz-interval-dropdown').val();
+      let minLength = parseInt(selectedMarkovChainLengthValue);
+      let maxLength = minLength + 10;
+      processTweets($('#firstsource').val() + ' and ' + $('#secondsource').val(), tweetsText, '#markov-chain-output-container',
+                    minLength, maxLength, parseInt(selectedVizInterval), enableButtonsCallback);
     } else {
       console.log('Got error when requesting tweets for markov chain!');
     }
   }
 
+  // <!-- !START: Markov-chain Tab functionalities -->
   function generateMarkovChain() {
     // Clear previous chain.
     $('#markov-chain-output-container').empty();
@@ -72,21 +101,49 @@
       alert('Please enter a twitter handle to proceed!');
       return;
     }
-    // print debugging -
-    // console.log('Getting tweets for: ' + String(firstSourceValue));
-    startGetRequestFromBackend(firstSourceValue, tweetsCallbackForMarkovChain);
+    let secondSourceValue = $('#secondsource').val();
+    if (secondSourceValue == '') {
+      secondSourceValue = 'IGNOREVALUE';
+    }
+
+    // Before starting a get request, disable the button so the user doesn't accidentally
+    // start another one.
+    $('#generate-markov-button').prop('disabled', true);
+
+    // Start get request to get the markov chain.
+    startGetRequestFromBackend(firstSourceValue, secondSourceValue, tweetsCallbackForMarkovChain);
+  }
+
+  // ##############################################
+  function saveMarkovChain() {
+    let savedChains = localStorage.savedChains;
+    let newSavedChains = [];
+    if (savedChains) {
+      newSavedChains = JSON.parse(savedChains);
+    }
+    newSavedChains.push(localStorage.currentMarkovChain);
+    localStorage.savedChains = JSON.stringify(newSavedChains);
+
+    // Now that we have saved our chain, disable the button.
+    $('#save-markov-chain-button').prop('disabled', true);
   }
 
   // This function will get called with the text of the tweets retrieved
   // from the backend. data will be the json object with the result.
   function tweetsCallbackForWordCloud(tweetsText, result) {
     if (result == 'success') {
-      createCloudFromWords(tweetsText, '#word-cloud-output-container');
+      let scaleType = $('#scaling-dropdown').val();
+      createWordCloudWithName($('#firstsource').val(), tweetsText, '#word-cloud-output-container', scaleType);
     } else {
       console.log('Got error when requesting tweets for word cloud!');
     }
   }
-  function generateWordCloud() {
+  // <!-- !START: Markov-chain Tab functionalities -->
+
+
+  // ##############################################
+  // <!-- !START: Word Cloud Tab functionalities -->
+  function addWordCloudToDiv() {
     // Clear previous cloud.
     // $('#word-cloud-output-container').empty();
     let firstSourceValue = $('#firstsource').val();
@@ -96,7 +153,11 @@
     }
 
     console.log('Getting tweets for: ' + String(firstSourceValue));
-    startGetRequestFromBackend(firstSourceValue, tweetsCallbackForWordCloud);
+    startGetRequestFromBackend(firstSourceValue, 'IGNOREVALUE', tweetsCallbackForWordCloud);
+  }
+
+  function clearWordCloudDiv() {
+    $('#word-cloud-output-container').empty();
   }
 
   $(function () {
@@ -109,7 +170,11 @@
       }
     })
   })
+  // <!-- !END: Word Cloud Tab functionalities -->
+
+
   // ##############################################
+  // <!-- !START: History Carousel Tab functionalities -->
   var slideIndex = 1;
   showSlides(slideIndex);
 
@@ -136,18 +201,23 @@
     slides[slideIndex - 1].style.display = "block";
     dots[slideIndex - 1].className += " active";
   }
+   // <!-- !START: History Carousel Tab functionalities -->
       // ###############################################
 </script>
 
 <body>
   <!-- START: Page Title -->
-  <div style="background-image: url('static/img/002.jpeg');background-position: center;background-size:initial;">
+  <!-- <div style="background-image: url('static/img/002.jpeg');background-position: center;background-size:initial;"> -->
   <div id='main-page'>
     <div class=img>
-      <div id='title-container' class='jumbotron' style='background-color: transparent;'>
+      <div id='title-container' class='jumbotron' style='background-color: transparent; padding-top: 50px; padding-bottom: 5px;'>
         <div class="text-center">
-          <h1 style="font-size:80px;">Mockingbird</h1>
-          <h4>Markov-Chain based text generation, because algorithms are magical.</h4>
+          <div style="display: inline-flex;">
+            <img src="{{ url_for('static', filename='/img/the_mockingbird_grey_915X609.jpg') }}" style="height: 150px; margin-top: -40px;"/>
+            <h1 style="font-size:100px;font-family: Garamond, serif; margin-top: 0px;">Mockingbird</h1>
+          </div>
+          <h3 style="font-family: Rockwell;">Markov-Chain text generation and Algorithm Visualization, because seeing is
+            understanding</h3>
         </div>
       </div>
     </div>
@@ -159,10 +229,10 @@
       <!-- START: Source Inputs -->
       <div id='source-inputs-containter'>
         <!-- first source input -->
-        <label for="twitterhandle1">I'd like to ask</label>
-        <input list="text_source1" id="firstsource" placeholder="@TwitterHandle" required>
+        <label for="twitterhandle1" style="font-size: x-large; margin-right: 5px;">I'd like to ask</label>
+        <input list="text_source" id="firstsource" placeholder="@TwitterHandle" required>
         <!-- second source input -->
-        <label for="twitterhandle">I'd like to also ask</label>
+        <label for="twitterhandle" style="font-size: x-large; margin-left: 20px; margin-right: 5px;">I'd like to also ask</label>
         <input list="text_source" id="secondsource" placeholder="@Optional">
         <datalist id="text_source">
           <option value="Monty Python">
@@ -192,7 +262,7 @@
     <!-- END: Header Container Div -->
 
     <!-- START: Markov chain tab div -->
-    <div id='markov-tab' class='tab' >
+    <div id='markov-tab' class='tab'>
       <!-- ! BEGIN: Text source input/s + feature inputs -->
       <div id="markov-features-containre">
         <!-- !feature input request/s -->
@@ -200,26 +270,34 @@
           <!-- chain min length dropdown -->
           <label for="min-chain-len-dropdown">Choose a min len:</label>
           <select id="min-chain-len-dropdown">
+            <option value="5">5 Words</option>
             <option value="10">10 Words</option>
             <option value="15">15 Words</option>
-            <option value="20">20 Words</option>
+          </select>
+
+          <!-- visualization speed dropdown -->
+          <label for="viz-interval-dropdown">Visualization Interval:</label>
+          <select id="viz-interval-dropdown">
+            <option value="50">50ms</option>
+            <option value="100">100ms</option>
+            <option value="250">250ms</option>
+            <option value="500">500ms</option>
           </select>
         </div>
 
         <!-- check input for feature selection -->
         <div class="form-check">
-          <input id="yes-viz" type="checkbox" class="form-check-input" id="viz-checkbox" checked>
+          <input id="viz-checkbox" type="checkbox" class="form-check-input" checked>
           <label class="form-check-label" for="exampleCheck1">Algorithm Visualization</label>
-          <input id="no-viz" type="checkbox" class="form-check-input" id="no-viz-checkbox" disabled>
-          <label class="form-check-label" for="exampleCheck1">No Visualization</label>
         </div>
 
         <!-- submit button that submits all -->
-        <button value="Submit" onclick="generateMarkovChain()">Generate Markov Chain</button>
+        <button id="generate-markov-button" onclick="generateMarkovChain()">Generate Markov Chain</button>
+        <button id="save-markov-chain-button" onclick="saveMarkovChain()" disabled>Save Current Markov Chain</button>
       </div>
       <!-- ! END: Text source input/s + feature inputs -->
       <!-- This block ONLY appears once user has submitted a 'text source' aka picked a celeb to answer their question -->
-      <div id="markov-chain-output-container" class="output-container" style="background-image: url('static/img/bluemain.jpg'); background-position: center;background-size:initial">
+      <div id="markov-chain-output-container" class="output-container">
       </div>
     </div>
     <!-- END: Markov chain tab div -->
@@ -230,15 +308,16 @@
       <div id="wc-features-containre">
         <!-- !feature input request/s -->
         <div class='internal-banner-nav'>
-          <!-- chain min length dropdown -->
-          <label for="min-chain-len-dropdown">Choose scaling:</label>
-          <select id="min-chain-len-dropdown">
-            <option value="10">logarithmic</option>
-            <option value="15">linear</option>
+          <!-- scaling dropdown -->
+          <label for="scaling-dropdown">Choose scaling:</label>
+          <select id="scaling-dropdown">
+            <option value="logarithmic">logarithmic</option>
+            <option value="linear">linear</option>
           </select>
         </div>
         <!-- submit button that submits all -->
-        <button value="Submit" onclick="generateWordCloud()">Generate Word Cloud(s)</button>
+        <button onclick="addWordCloudToDiv()">Add Word Cloud(s)</button>
+        <button onclick="clearWordCloudDiv()">Clear All Word Cloud(s)</button>
       </div>
       <!-- ! END: Text source input/s + feature inputs -->
       <!-- This block ONLY appears once user has submitted a 'text source' aka picked a celeb to answer their question -->
@@ -253,41 +332,32 @@
       <div class='internal-banner-nav'>
         <label>Saved Markov Generated Text</label>
       </div>
-      <div class="slideshow-container" style="background-image: url('static/img/rainbow2.png');
-      height:250px; background-position: center;background-size:initial">
-
-        <div class="mySlides fade">
-          <div class="numbertext">1 / 3</div>
-          <p>First Sentence</h2>
+      <div class="slideshow-container" style="background-image: url('static/img/rainbow2.png');">
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <div class="mySlides">
+          <!-- <div class="numbertext">1 / 3</div> -->
+          <div id="saved-chain1" class="text"></div>
         </div>
 
-        <div class="mySlides fade">
-          <div class="numbertext">2 / 3</div>
-          <p>Second Sentence</p>
+        <div class="mySlides">
+          <div id="saved-chain2" class="text"></div>
         </div>
 
-        <div class="mySlides fade">
-          <div class="numbertext">3 / 3</div>
-          <p>Third Sentence</p>
+        <div class="mySlides">
+          <div id="saved-chain3" class="text"></div>
         </div>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
       </div>
-      <!-- <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-      <a class="next" onclick="plusSlides(1)">&#10095;</a> -->
-
       <div style="text-align:center">
         <span class="dot" onclick="currentSlide(1)"></span>
         <span class="dot" onclick="currentSlide(2)"></span>
         <span class="dot" onclick="currentSlide(3)"></span>
       </div>
+      <!-- </div> -->
     </div>
-    <br>
-
-
-  
-
-  <!-- END: Top generated text carousel div -->
+    <script>currentSlide(1)</script>
+    <!-- END: Top generated text carousel div -->
   </div>
-</div>
 </body>
 
 </html>
