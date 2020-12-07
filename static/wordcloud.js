@@ -21,7 +21,7 @@ function acceptWord(word) {
                           'had', 'has', 'was', 'all', 'any', 'one', 'out',
                           'his', ' her', 'and', 'too', 'from', ',', '_', '-', '!', '?', '.', '—', '–'];
 
-  const dontStartWith = ['http', '@', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+  const dontStartWith = ['http', '@', '#', '$', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
   if (dntIncludeWords.includes(word)) {
     return false;
@@ -30,7 +30,12 @@ function acceptWord(word) {
   }
   
   for (dontStart of dontStartWith) {
+    // console.log('--begin--');
+    // console.log('|' + word + '|');
+    // console.log('|' + dontStart + '|');
+    // console.log('--end--');
     if (word.startsWith(dontStart)) {
+      // console.log('returning false!');
       return false;
     }
   }
@@ -43,6 +48,7 @@ function acceptWord(word) {
 }
 
 function createWordListWithSize(words, scaleType) {
+  console.log('Creating list for words of length: ' + String(words.length));
   // Dictionary of word/wordFrequency (keys/values).
   let wordsFrequencyDict = {};
  

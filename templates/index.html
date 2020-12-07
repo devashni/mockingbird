@@ -74,7 +74,7 @@
 
   function enableButtonsCallback() {
     $('#save-markov-chain-button').prop('disabled', false);
-    $('#generate-markov-button').prop('disabled', false);      
+    $('#generate-markov-button').prop('disabled', false);
   }
 
   // This function will get called with the text of the tweets retrieved from the backend(server.py). 
@@ -85,8 +85,14 @@
       let selectedVizInterval = $('#viz-interval-dropdown').val();
       let minLength = parseInt(selectedMarkovChainLengthValue);
       let maxLength = minLength + 10;
-      processTweets($('#firstsource').val() + ' and ' + $('#secondsource').val(), tweetsText, '#markov-chain-output-container',
-                    minLength, maxLength, parseInt(selectedVizInterval), enableButtonsCallback);
+      let name = '';
+      if ($('#firstsource').val() != '' && $('#secondsource').val() != '') {
+        name = $('#firstsource').val() + ' and ' + $('#secondsource').val();
+      } else {
+        name = $('#firstsource').val();
+      }
+      processTweets(name, tweetsText, '#markov-chain-output-container',
+        minLength, maxLength, parseInt(selectedVizInterval), enableButtonsCallback);
     } else {
       console.log('Got error when requesting tweets for markov chain!');
     }
@@ -210,14 +216,17 @@
   <!-- <div style="background-image: url('static/img/002.jpeg');background-position: center;background-size:initial;"> -->
   <div id='main-page'>
     <div class=img>
-      <div id='title-container' class='jumbotron' style='background-color: transparent; padding-top: 50px; padding-bottom: 5px;'>
+      <div id='title-container' class='jumbotron'
+        style='background-color: transparent; padding-top: 50px; padding-bottom: 5px;'>
         <div class="text-center">
           <div style="display: inline-flex;">
-            <img src="{{ url_for('static', filename='/img/the_mockingbird_grey_915X609.jpg') }}" style="height: 150px; margin-top: -40px;"/>
-            <h1 style="font-size:100px;font-family: Garamond, serif; margin-top: 0px;">Mockingbird</h1>
+            <img src="{{ url_for('static', filename='/img/the_mockingbird_grey_915X609.jpg') }}"
+              style="height: 150px; margin-top: -40px;" />
+            <h1 style="font-size:90px;font-family: Garamond, serif; margin-top: 0px; margin-right: 225px">Mockingbird
+            </h1>
           </div>
-          <h3 style="font-family: Rockwell;">Markov-Chain text generation and Algorithm Visualization, because seeing is
-            understanding</h3>
+          <h4 style="font-family:revert;">Markov-Chain text generation and Algorithm Visualization, because seeing is
+            understanding.</h4>
         </div>
       </div>
     </div>
@@ -229,10 +238,10 @@
       <!-- START: Source Inputs -->
       <div id='source-inputs-containter'>
         <!-- first source input -->
-        <label for="twitterhandle1" style="font-size: x-large; margin-right: 5px;">I'd like to ask</label>
+        <label for="twitterhandle1" style="font-size: large; margin-right: 5px;">Generate text that mimics</label>
         <input list="text_source" id="firstsource" placeholder="@TwitterHandle" required>
         <!-- second source input -->
-        <label for="twitterhandle" style="font-size: x-large; margin-left: 20px; margin-right: 5px;">I'd like to also ask</label>
+        <label for="twitterhandle" style="font-size: large; margin-left: 20px; margin-right: 5px;"> and </label>
         <input list="text_source" id="secondsource" placeholder="@Optional">
         <datalist id="text_source">
           <option value="Monty Python">
@@ -244,7 +253,7 @@
       <!-- END: Source Inputs -->
 
       <!-- START: Tab Navigaton Bar -->
-      <div id='navigation-bar'>
+      <div id='navigation-bar' style='font-size: large;'>
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a onclick='activateMarkovTab();' class="nav-link" href="#">Markov Chain</a>
@@ -268,15 +277,15 @@
         <!-- !feature input request/s -->
         <div class='internal-banner-nav'>
           <!-- chain min length dropdown -->
-          <label for="min-chain-len-dropdown">Choose a min len:</label>
+          <label for="min-chain-len-dropdown">Minimum Sentence Length:</label>
           <select id="min-chain-len-dropdown">
             <option value="5">5 Words</option>
             <option value="10">10 Words</option>
             <option value="15">15 Words</option>
           </select>
 
-          <!-- visualization speed dropdown -->
-          <label for="viz-interval-dropdown">Visualization Interval:</label>
+          <!-- visualization interval dropdown -->
+          <label for="viz-interval-dropdown" style="margin-left:70px">Visualization Interval:</label>
           <select id="viz-interval-dropdown">
             <option value="50">50ms</option>
             <option value="100">100ms</option>
@@ -288,12 +297,13 @@
         <!-- check input for feature selection -->
         <div class="form-check">
           <input id="viz-checkbox" type="checkbox" class="form-check-input" checked>
-          <label class="form-check-label" for="exampleCheck1">Algorithm Visualization</label>
+          <label class="form-check-label" for="exampleCheck1" style="font-size: large;">Algorithm Visualization</label>
         </div>
 
         <!-- submit button that submits all -->
-        <button id="generate-markov-button" onclick="generateMarkovChain()">Generate Markov Chain</button>
-        <button id="save-markov-chain-button" onclick="saveMarkovChain()" disabled>Save Current Markov Chain</button>
+        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" id="generate-markov-button;" onclick="generateMarkovChain()" >Generate Text</button>
+        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" id="save-markov-chain-button" onclick="saveMarkovChain()" disabled>Save Text</button>
+
       </div>
       <!-- ! END: Text source input/s + feature inputs -->
       <!-- This block ONLY appears once user has submitted a 'text source' aka picked a celeb to answer their question -->
@@ -315,10 +325,12 @@
             <option value="linear">linear</option>
           </select>
         </div>
+        <p></p>
         <!-- submit button that submits all -->
-        <button onclick="addWordCloudToDiv()">Add Word Cloud(s)</button>
-        <button onclick="clearWordCloudDiv()">Clear All Word Cloud(s)</button>
+        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" onclick="addWordCloudToDiv()">Add Word Cloud(s)</button>
+        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" onclick="clearWordCloudDiv()">Clear All Word Cloud(s)</button>
       </div>
+      <p></p>
       <!-- ! END: Text source input/s + feature inputs -->
       <!-- This block ONLY appears once user has submitted a 'text source' aka picked a celeb to answer their question -->
       <div id="word-cloud-output-container" class="output-container">
@@ -332,7 +344,7 @@
       <div class='internal-banner-nav'>
         <label>Saved Markov Generated Text</label>
       </div>
-      <div class="slideshow-container" style="background-image: url('static/img/rainbow2.png');">
+      <div class="slideshow-container">
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <div class="mySlides">
           <!-- <div class="numbertext">1 / 3</div> -->

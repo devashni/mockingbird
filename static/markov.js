@@ -155,7 +155,7 @@ function addWordsToOutputDiv(parentDivId, wordArray, chosenWordIndex) {
 }
 
 // ! This function animates/visualizes the steps of a markov chain algorithm execution run.
-function animateStepsOfMarkovChain(parentDivId, steps, intervalMs, enableButtonsCallback) {
+function animateStepsOfMarkovTextGeneration(parentDivId, steps, intervalMs, enableButtonsCallback) {
   // console.log('Calling setInterval!');
   let i = 0;
   let lenSteps = steps.length;
@@ -179,14 +179,14 @@ function animateStepsOfMarkovChain(parentDivId, steps, intervalMs, enableButtons
   }, intervalMs);
 }
 
-function printStepsOfMarkovChain(parentDivId, steps) {
+function printGeneratedMarkovTextFromSteps(parentDivId, steps) {
   for (step of steps) {
     let indexOfChosenWord = step.slice(-1);
     addTextDivAsChild(parentDivId, step[indexOfChosenWord]);
   }
 }
 
-function saveChain(tweetsSource, steps) {
+function saveMarkovText(tweetsSource, steps) {
   let chain = "";
   for (step of steps) {
     let indexOfChosenWord = step.slice(-1);
@@ -211,6 +211,8 @@ function acceptWordMarkov(word) {
   const dontStartWith = [
     "http",
     "@",
+    "#",
+    "$",
     "1",
     "2",
     "3",
@@ -260,11 +262,11 @@ function processTweets(tweetsSource, tweetsText, outputDivId, minLength = 10, ma
   console.log(steps);
   let checkBoxJqueryObject = $("#viz-checkbox");
   if (checkBoxJqueryObject.prop("checked")) {
-    animateStepsOfMarkovChain(outputDivId, steps, intervalMs, enableButtonsCallback);
+    animateStepsOfMarkovTextGeneration(outputDivId, steps, intervalMs, enableButtonsCallback);
   } else {
-    printStepsOfMarkovChain(outputDivId, steps);
+    printGeneratedMarkovTextFromSteps(outputDivId, steps);
     enableButtonsCallback();
   }
 
-  saveChain(tweetsSource, steps);
+  saveMarkovText(tweetsSource, steps);
 }
