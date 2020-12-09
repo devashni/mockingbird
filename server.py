@@ -11,14 +11,23 @@ from model import connect_to_db
 
 import markov
 import crud
-from testtext import trump_tweets, monty_python, oscar_wilde
+from testtext import trump_tweets, monty_python, oscar_wilde, george_carlin, barack_obama
 
 import api
 
 app = Flask(__name__)
 
-source_dict = {"God": None, "Monty Python": monty_python, "Trump Tweets": trump_tweets,
-               "Oscar Wilde": oscar_wilde, "Sigmund Freud": None, "George Carlin": None}
+source_dict = {
+"Barack Obama": barack_obama,
+"George Carlin": george_carlin,
+"Jenny Lawson" :None,
+"Monty Python": monty_python,
+"Oscar Wilde": oscar_wilde,
+"Sigmund Freud": None,
+"Trump Tweets": trump_tweets,
+"God": None,
+}
+
 
 # same as @app.route("/", methods=['GET']) because GET is default method
 @app.route("/")

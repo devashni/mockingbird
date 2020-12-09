@@ -225,7 +225,8 @@
             <h1 style="font-size:90px;font-family: Garamond, serif; margin-top: 0px; margin-right: 225px">Mockingbird
             </h1>
           </div>
-          <h4 style="font-family:revert;">Markov-Chain text generation and Algorithm Visualization, because seeing is
+          <h4 style="font-family:revert;">Markov chain based text generation and algorithm visualization, because seeing
+            is
             understanding.</h4>
         </div>
       </div>
@@ -244,9 +245,12 @@
         <label for="twitterhandle" style="font-size: large; margin-left: 20px; margin-right: 5px;"> and </label>
         <input list="text_source" id="secondsource" placeholder="@Optional">
         <datalist id="text_source">
+          <option value="Barack Obama">
+          <option value="George Carlin">
+          <option value="Jenny Lawson">
           <option value="Monty Python">
-          <option value="Trump Tweets">
           <option value="Oscar Wilde">
+          <option value="Sigmund Freud">
           </option>
         </datalist>
       </div>
@@ -259,10 +263,10 @@
             <a onclick='activateMarkovTab();' class="nav-link" href="#">Markov Chain</a>
           </li>
           <li class="nav-item">
-            <a onclick='activateWcTab();' class="nav-link" href="#">Word Cloud</a>
+            <a onclick='activateHistoryTab();' class="nav-link" href="#">Saved Texts</a>
           </li>
           <li class="nav-item">
-            <a onclick='activateHistoryTab();' class="nav-link" href="#">History</a>
+            <a onclick='activateWcTab();' class="nav-link" href="#">Word Cloud</a>
           </li>
         </ul>
       </div>
@@ -301,8 +305,10 @@
         </div>
 
         <!-- submit button that submits all -->
-        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" id="generate-markov-button;" onclick="generateMarkovChain()" >Generate Text</button>
-        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" id="save-markov-chain-button" onclick="saveMarkovChain()" disabled>Save Text</button>
+        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" id="generate-markov-button;"
+          onclick="generateMarkovChain()">Generate Text</button>
+        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" id="save-markov-chain-button"
+          onclick="saveMarkovChain()" disabled>Save Text</button>
 
       </div>
       <!-- ! END: Text source input/s + feature inputs -->
@@ -327,8 +333,10 @@
         </div>
         <p></p>
         <!-- submit button that submits all -->
-        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" onclick="addWordCloudToDiv()">Add Word Cloud(s)</button>
-        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" onclick="clearWordCloudDiv()">Clear All Word Cloud(s)</button>
+        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" onclick="addWordCloudToDiv()">Add Word
+          Cloud(s)</button>
+        <button class="btn btn-lg btn-primary" style="background-color: #63a4ff" onclick="clearWordCloudDiv()">Clear All
+          Word Cloud(s)</button>
       </div>
       <p></p>
       <!-- ! END: Text source input/s + feature inputs -->
