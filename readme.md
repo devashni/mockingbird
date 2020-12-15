@@ -1,5 +1,5 @@
 ## Project Name: Mockingbird
-## Brief: 
+## Brief 
 Markov chain based text generation and algorithm visualization, because seeing is understanding. A full-stack web application built in 4 weeks as Hackbright Fellowship final project.
 
 ## Description
@@ -12,7 +12,8 @@ Users can enable or disable visualization of the steps of the text generation al
 - Tools: Flask, Jinja, JQuery, D3, Bootstrap, PostgreSQL, SQLAlchemy
 - API: Twitter
 
-View Youtube project demo [here](https://www.youtube.com/watch?v=JO8ANjfcFik&feature=youtu.be).
+## Youtube Project Demo 
+[![Mockingbird Demo](https://i.ytimg.com/vi/JO8ANjfcFik/maxresdefault.jpg)](https://www.youtube.com/watch?v=JO8ANjfcFik&feature=youtu.be "Mockingbird Demo")
 
 ## <a name="nextsteps"></a>Project Next Steps
 * Add Facebook and Twitter o-auth 
