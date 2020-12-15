@@ -7,7 +7,7 @@ import time
 
 from random import choice, shuffle
 
-from testtext import trump_tweets, monty_python, oscar_wilde
+from testtext import trump_tweets, monty_python, oscar_wilde, george_carlin, barack_obama
 
 def make_sentence(words):
     """Take a list of strings as input and join them together (with spaces in between) to form a sentence."""
@@ -100,7 +100,7 @@ def make_text(chains, min_words):
             # # words in the chain.  Sleep for a second so the user can see the
             # # full sentence, along with the words in the chain.
             # ! uncomment to implement terminal visualization
-            time.sleep(2.0)
+            time.sleep(1.5)
             clear_screen()
 
             # # Now just print the sentence as it would be after the word chosing
@@ -118,7 +118,7 @@ def make_text(chains, min_words):
             # Sleep for 0.1s.  This will allow the user to see the sentence
             # with the new word momentarily before we replace the sentence with a new one.
             # ! uncomment to implement terminal visualization
-            time.sleep(1.1)
+            time.sleep(1.0)
 
         # If we already have the number of words we need, and have a
         # terminating word available?
@@ -147,6 +147,6 @@ min_words = 15
 # ! ONLY for Algorithm testing below; functions are being called in a separate file
 if __name__ == "__main__": 
     shuffle(trump_tweets)
-    chains = make_chains(make_sentence(trump_tweets + monty_python))
+    chains = make_chains(make_sentence(trump_tweets))
     text = make_text(chains, min_words)
     print(text)
