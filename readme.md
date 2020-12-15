@@ -1,5 +1,6 @@
-Project Name: Mockingbird
-Brief: Markov chain based text generation and algorithm visualization, because seeing is understanding. A full-stack web application built in 4 weeks as Hackbright Fellowship final project.
+## Project Name: Mockingbird
+## Brief: 
+Markov chain based text generation and algorithm visualization, because seeing is understanding. A full-stack web application built in 4 weeks as Hackbright Fellowship final project.
 
 ## Description
 The Mockingbird web app uses a Markov chain based text generation algorithm to generate random believable sentences mimicking the style of the original author. The ‘source text’ can be pulled from live tweets off Twitter for up to two different sources or selected from the app database. Sentences based on one person’s tweets can be entertaining but throwing in interesting personalities to the mix can produce compelling and often hilarious results.
