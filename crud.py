@@ -3,7 +3,7 @@
 from model import db, connect_to_db, User, Generated_Text, Sample_Text , Sample_Text_Source
 
 # TODO: deploy o-auth using facebook for login/user profile
-# TODO:finish user generation
+# TODO:
 def create_user(email, password, name):
     """Create and return a new user."""
 
@@ -43,7 +43,7 @@ def add_generated_text(text):
     
 #     return __blank__.query.all()
 
-
+####################################
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
