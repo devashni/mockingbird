@@ -141,7 +141,7 @@ def make_text(chains, min_words):
         clear_screen()
     return make_sentence(words)
 
-# TODO: Potential Feature -Can also take min_words input from users to make the interface more dynamic in the future
+# TODO: Potential Feature - Can also take min_words input from users to make the interface more dynamic in the future
 min_words = 15
 
 # ! ONLY for Algorithm testing below; functions are being called in a separate file
